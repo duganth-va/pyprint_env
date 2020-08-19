@@ -6,6 +6,6 @@ set -e
 . /opt/pysetup/.venv/bin/activate
 
 # You can put other setup logic here
-exec /usr/bin/ssm-parent --plain-path / run -- env LOG_LOCATION=console "$@"
+exec /usr/bin/ssm-parent --plain-path "/td/envvars/lab/" run -- env LOG_LOCATION=console "$@"
 # Evaluating passed command:
 #exec "$@"
