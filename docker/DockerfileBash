@@ -1,0 +1,7 @@
+# get the ssm-parent as a Docker stage
+FROM springload/ssm-parent:1.4.1 as ssm-parent
+
+FROM alpine:3.7
+COPY --from=ssm-parent /usr/bin/ssm-parent /usr/bin/ssm-parent
+ENTRYPOINT ["/usr/bin/ssm-parent", "run", "--plain-path", "/"]
+CMD ["printenv"]
