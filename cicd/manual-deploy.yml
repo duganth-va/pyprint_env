@@ -36,9 +36,11 @@ phases:
         -t "$DEPLOY_TAG" \
         --timeout 1200 "${CLUSTER}" "${SERVICE}" \
         | tee "$CODEBUILD_SRC_DIR"/deploy_output.txt; then
+        echo pass
       else
         PROJECT=$(echo "${CODEBUILD_BUILD_ID}"|awk -F":" '{print $1}')
         BUILD=$(echo "${CODEBUILD_BUILD_ID}"|awk -F":" '{print $2}')
+        echo fail
       fi
   post_build:
     commands:
