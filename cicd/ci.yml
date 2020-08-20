@@ -10,7 +10,7 @@ phases:
       - echo Logging into ECR
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       - echo Get Branch
-      - BRANCH=$($CODEBUILD_WEBHOOK_TRIGGER | awk -F'/' '{print $2}')
+      - BRANCH=$(echo $CODEBUILD_WEBHOOK_TRIGGER | awk -F'/' '{print $2}')
   build:
     commands:
       - echo Build started on `date`
