@@ -26,25 +26,25 @@ phases:
       if hub release create -m ${NEW_RELEASE_TAG} -t main ${NEW_RELEASE_TAG}; then
         git fetch origin
         if TAG_COMMIT_HASH=$(git rev-parse ${NEW_RELEASE_TAG}); then
-          echo "Got hash for ${NEW_RELEASE_TAG}: ${TAG_COMMIT_HASH}"
+          echo pass
         else
           echo Failed to get hash for ${NEW_RELEASE_TAG}
           exit 1
         fi
         echo Tagging ECR image...
         if python3 /usr/local/bin/tag_containers.py -n ${CI_JOB_NAME} -i ${TAG_COMMIT_HASH} -r ${REPOSITORY} -v ${NEW_RELEASE_TAG} -o ${CODEBUILD_SRC_DIR}/tag_output.txt; then
-          echo "Tagged ${REPOSITORY}:${NEW_RELEASE_TAG}"
+          echo pass 
         else
           PROJECT=$(echo ${CODEBUILD_BUILD_ID}|awk -F":" '{print $1}')
           BUILD=$(echo ${CODEBUILD_BUILD_ID}|awk -F":" '{print $2}')
           TAG_OUTPUT=$(cat ${CODEBUILD_SRC_DIR}/tag_output.txt)
-          echo $TAG_OUTPUT\n<https://console.amazonaws-us-gov.com/codesuite/codebuild/projects/${PROJECT}/build/${PROJECT}%3A${BUILD}/log?region=${AWS_REGION}|CodeBuild Project> Tagging failed.
+          echo fail 
           exit 1
         fi
       else
         PROJECT=$(echo ${CODEBUILD_BUILD_ID}|awk -F":" '{print $1}')
         BUILD=$(echo ${CODEBUILD_BUILD_ID}|awk -F":" '{print $2}')
-        echo <https://console.amazonaws-us-gov.com/codesuite/codebuild/projects/${PROJECT}/build/${PROJECT}%3A${BUILD}/log?region=${AWS_REGION}|CodeBuild Project> Release failed.
+        echo fail
         exit 1
       fi
   build:
