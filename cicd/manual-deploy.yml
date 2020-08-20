@@ -35,7 +35,7 @@ phases:
     - |
       if ecs deploy --no-deregister \
         -t "$DEPLOY_TAG" \
-        -e "${CONTAINER}" APP_VER "'${DEPLOY_TAG}'" \ 
+        -e "${CONTAINER}" APP_VER "'${DEPLOY_TAG}'" \
         --timeout 1200 "${CLUSTER}" "${SERVICE}" \
         | tee "$CODEBUILD_SRC_DIR"/deploy_output.txt; then
         echo pass
