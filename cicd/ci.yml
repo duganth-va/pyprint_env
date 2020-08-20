@@ -9,14 +9,15 @@ phases:
       - apt-get -y install awscli
       - echo Logging into ECR
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - echo Get Branch
+      - BRANCH=$(echo $CODEBUILD_WEBHOOK_TRIGGER | awk -F'/' '{print $2}')
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t envvars:$CODEBUILD_RESOLVED_SOURCE_VERSION -f docker/Dockerfile .
-      - docker tag envvars:$CODEBUILD_RESOLVED_SOURCE_VERSION $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/envvars:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/envvars:$CODEBUILD_RESOLVED_SOURCE_VERSION -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/envvars:$BRANCH -f docker/Dockerfile .
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/envvars:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/envvars

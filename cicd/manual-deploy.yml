@@ -28,17 +28,17 @@ phases:
       fi
   build:
     commands:
-      - echo Triggering deploys...
-      - |
-        SERVICE="td-envvars-service"
-        CLUSTER="td-envvars-cluster"
-        if ecs deploy --no-deregister \
-          -t "$DEPLOY_TAG" \
-          --timeout 1200 "${CLUSTER}" "${SERVICE}" \
-          | tee "$CODEBUILD_SRC_DIR"/deploy_output.txt; then
-        else
-          PROJECT=$(echo "${CODEBUILD_BUILD_ID}"|awk -F":" '{print $1}')
-          BUILD=$(echo "${CODEBUILD_BUILD_ID}"|awk -F":" '{print $2}')
-        fi
+    - echo Triggering deploys...
+    - SERVICE="td-envvars-service"
+    - CLUSTER="td-envvars-cluster"
+    - |
+      if ecs deploy --no-deregister \
+        -t "$DEPLOY_TAG" \
+        --timeout 1200 "${CLUSTER}" "${SERVICE}" \
+        | tee "$CODEBUILD_SRC_DIR"/deploy_output.txt; then
+      else
+        PROJECT=$(echo "${CODEBUILD_BUILD_ID}"|awk -F":" '{print $1}')
+        BUILD=$(echo "${CODEBUILD_BUILD_ID}"|awk -F":" '{print $2}')
+      fi
   post_build:
     commands:
