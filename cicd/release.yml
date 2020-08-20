@@ -22,7 +22,7 @@ phases:
     # This is a WORKAROUND to Codebuild not having the 'git_commit_sha' from the webhook available.
     # We then tag the image using tag_containers.py, if that command is successful, we are done with this section.
     # Failures are noted and notifications are made with links to the Codebuild job.
-    - echo ${TAG_COMMIT_HASH}
+    - echo $TAG_COMMIT_HASH
     - |
       if hub release create -m ${NEW_RELEASE_TAG} -t main ${NEW_RELEASE_TAG}; then
         git fetch origin
