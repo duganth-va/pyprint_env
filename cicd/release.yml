@@ -15,7 +15,7 @@ phases:
     - $(aws ecr get-login --no-include-email --region ${AWS_DEFAULT_REGION})
     - echo Setting tag for new release...
     # To get the new release version, we will increment the last version number found in Github
-    - NEW_RELEASE_TAG=$(increment.sh $(hub tag|grep '^fargate-saml-proxy'|sort --version-sort |tail -1)); export NEW_RELEASE_TAG
+    - NEW_RELEASE_TAG=$(increment.sh $(hub tag|grep '^v'|sort --version-sort |tail -1)); export NEW_RELEASE_TAG
     - echo Creating release...
     # We use the 'hub' command to create a release here with the contents of 'master'. If the command exits successfully, we then
     # git fetch to get the new tag created, and we use that tag to get a commit SHA for the new release.
@@ -23,7 +23,7 @@ phases:
     # We then tag the image using tag_containers.py, if that command is successful, we are done with this section.
     # Failures are noted and notifications are made with links to the Codebuild job.
     - |
-      if hub release create -m ${NEW_RELEASE_TAG} -t master ${NEW_RELEASE_TAG}; then
+      if hub release create -m ${NEW_RELEASE_TAG} -t main ${NEW_RELEASE_TAG}; then
         git fetch origin
         if TAG_COMMIT_HASH=$(git rev-parse ${NEW_RELEASE_TAG}); then
           echo Got hash for ${NEW_RELEASE_TAG}: ${TAG_COMMIT_HASH}
