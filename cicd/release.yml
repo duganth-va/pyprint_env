@@ -38,13 +38,13 @@ phases:
           PROJECT=$(echo ${CODEBUILD_BUILD_ID}|awk -F":" '{print $1}')
           BUILD=$(echo ${CODEBUILD_BUILD_ID}|awk -F":" '{print $2}')
           TAG_OUTPUT=$(cat ${CODEBUILD_SRC_DIR}/tag_output.txt)
-          echo fail 
+          echo fail tagging 
           exit 1
         fi
       else
         PROJECT=$(echo ${CODEBUILD_BUILD_ID}|awk -F":" '{print $1}')
         BUILD=$(echo ${CODEBUILD_BUILD_ID}|awk -F":" '{print $2}')
-        echo fail
+        echo fail releasing
         exit 1
       fi
   build:
