@@ -15,6 +15,7 @@ phases:
       - echo Building the Docker image...
       - docker build -t envvars:$CODEBUILD_RESOLVED_SOURCE_VERSION -f docker/Dockerfile .
       - docker tag envvars:$CODEBUILD_RESOLVED_SOURCE_VERSION $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/envvars:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker tag envvars:$CODEBUILD_RESOLVED_SOURCE_VERSION $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/envvars:$CODEBUILD_WEBHOOK_TRIGGER
   post_build:
     commands:
       - echo Build completed on `date`
