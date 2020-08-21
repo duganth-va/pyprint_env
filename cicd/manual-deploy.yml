@@ -35,7 +35,8 @@ phases:
       else
         CONFIG_TAG=$(hub tag|sort --version-sort |tail -1); export CONFIG_TAG
       fi
-    - cd ..
+    - echo Updating configs
+    - python3 /usr/local/bin/main.py
   build:
     commands:
     - echo Triggering deploys...
