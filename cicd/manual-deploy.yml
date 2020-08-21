@@ -26,6 +26,15 @@ phases:
         DEPLOY_TAG=$(hub tag|sort --version-sort |tail -1); export DEPLOY_TAG
         echo Got latest tag from Github: "$DEPLOY_TAG"
       fi
+    - echo Getting latest config...
+    - git clone https://github.com/duganth-va/pyprint_env-config
+    - cd pyprint_env-config;
+    - | 
+      if [ -n "$CONFIG_TAG" ]; then
+        git checkout "$CONFIG_TAG"
+      else
+        CONFIG_TAG=$(hub tag|sort --version-sort |tail -1); export CONFIG_TAG
+    - cd ..
   build:
     commands:
     - echo Triggering deploys...
@@ -36,6 +45,7 @@ phases:
       if ecs deploy --no-deregister \
         -t "$DEPLOY_TAG" \
         -e "${CONTAINER}" APP_VER "'${DEPLOY_TAG}'" \
+        -e "${CONTAINER}" CONFIG_VER "'${CONFIG_TAG}'" \
         --timeout 1200 "${CLUSTER}" "${SERVICE}" \
         | tee "$CODEBUILD_SRC_DIR"/deploy_output.txt; then
         echo pass
