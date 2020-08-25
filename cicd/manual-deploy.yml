@@ -15,8 +15,6 @@ env:
 phases:
   pre_build:
     commands:
-    - echo Logging into ECR
-    - $(aws ecr get-login --no-include-email --region ${AWS_DEFAULT_REGION})
     - echo Getting latest tag...
     # To get the latest release version, we will increment the last version number found in Github
     - |
