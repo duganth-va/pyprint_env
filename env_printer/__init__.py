@@ -12,6 +12,8 @@ def create_app():
     @app.route('/')
     def index():
         b = {}
+        f = open("/tmp/test", 'r')
+        b["FILE_CONTENTS"] = f.read()
         for k, v in os.environ.items():
             b[k] = v
         return jsonify(b)

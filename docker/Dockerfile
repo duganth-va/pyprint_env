@@ -82,6 +82,10 @@ CMD ["uvicorn", "--reload", "--host=0.0.0.0", "--port=8000", "main:app"]
 FROM python-base as production
 ENV FASTAPI_ENV=production
 
+RUN apt-get update && apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
+
+
 COPY --from=ssm-parent /usr/bin/ssm-parent /usr/bin/ssm-parent
 COPY --from=builder-base $VENV_PATH $VENV_PATH
 COPY ./docker/gunicorn_conf.py /gunicorn_conf.py
